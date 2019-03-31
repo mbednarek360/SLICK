@@ -12,7 +12,7 @@ Random number in the range 1 to l! - 1.
 Can encrypt / decrypt information with a size less than l.  
 Length is also encoded into the key.  
 
-Ex 50-byte key: `32xC09CA72CE847FA6A`
+Ex 50-byte key: `32x20E098F42979CC1346482F169117C24B`
 
 ---
 ### **Encryption:**  

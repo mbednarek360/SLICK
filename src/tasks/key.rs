@@ -29,7 +29,8 @@ pub fn gen_key(l: u64) -> String {
 
 
 // ----------------------------------------------------------------
-pub fn parse_key(k: String) -> (u64, u128) {
+// parses key string to length and seed
+pub fn parse_key(k: &String) -> (u64, u128) {
     let v: Vec<&str> = k.split("x").collect();
     let l = u64::from_str_radix(v[0], 16).unwrap();
     let s = u128::from_str_radix(v[1], 16).unwrap();
