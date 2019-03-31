@@ -6,10 +6,8 @@ mod file;
 pub fn file_crypt(k: &String, f: &String, e: bool) {
     let key = key::parse_key(&k);
     let data = file::read_file(&f);
-    let enc = crypt::vec_crypt(key.1, key.0, &data);
-
-    println!("{:?}", enc);
-
+    let enc = crypt::vec_crypt(key.1, key.0, &data, e);
+    file::write_file(&f, &enc);
 }
 
 
