@@ -18,10 +18,10 @@ fn vec_shift(b: u8, n: u64, e: bool) -> u8 {
     let max = 256;
     let pos = n % max;
     if e {
-        return ((b as u64 + pos) % max) as u8;
+        return (((b as u64 + pos) % max) << pos) as u8;
     }
     else {
-        return ((b as u64 - pos) % max) as u8;
+        return (((b as u64 - pos) % max) >> pos) as u8;
     }
 }
 
@@ -33,7 +33,15 @@ pub fn vec_crypt(k: u128, l: u64, a: &Vec<u8>, e: bool) -> Vec<u8> {
     let c = vec_const(k, l);
     for i in 0..l {
         let p = vec_position(i, c, l);
-        let b = vec_shift(a[p as usize], p + 1, e);
+        let s;
+        if e {
+            s = p + 1;
+        }
+        else {
+            s = i + 1;
+        }
+        let b = vec_shift(a[p as usize], s, e);
+        println!("{}:{}", a[i as usize], s);
         f.push(b);
     }
     return f;
