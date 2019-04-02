@@ -24,6 +24,6 @@ pub fn gen_key(s: &String) {
 // ----------------------------------------------------------------
 // error for invalid command
 pub fn error() {
-    println!("Invalid command. See -h for a list of commands.");
-    // println!("{}", crypt::vec_shift(255, 8, true));
+    //println!("Invalid command. See -h for a list of commands.");
+    println!("{}", crypt::vec_shift(26, 2, true));
 }

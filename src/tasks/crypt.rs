@@ -14,14 +14,14 @@ fn vec_position(i: u64, c: u64, l: u64) -> u64 {
 
 // ----------------------------------------------------------------
 // shift byte value by current position
-fn vec_shift(b: u8, n: u64, e: bool) -> u8 {
+pub fn vec_shift(b: u8, n: u64, e: bool) -> u8 {
     let max = 256;
     let pos = n % max;
     if e {
-        return (((b as u64 + pos) % max) << pos) as u8;
+        return (((b as u64 + pos) % max) ^ pos) as u8;
     }
     else {
-        return (((b as u64 - pos) % max) >> pos) as u8;
+        return (((b as u64 ^ pos) - pos) % max) as u8;
     }
 }
 
@@ -41,7 +41,6 @@ pub fn vec_crypt(k: u128, l: u64, a: &Vec<u8>, e: bool) -> Vec<u8> {
             s = i + 1;
         }
         let b = vec_shift(a[p as usize], s, e);
-        println!("{}:{}", a[i as usize], s);
         f.push(b);
     }
     return f;
