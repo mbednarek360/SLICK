@@ -2,17 +2,18 @@
 // pad or depad vector with zeroes to match key length
 fn vec_pad(k: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
     let mut out = v.clone();
+    let l = v.len() as u64;
     if e {
-        let l = v.len() as u64;
-        for i in 0..(k - l) {
+        out.push(255);
+        for i in 0..((k - l) - 1) {
             out.push(0);
         }
-        out.push(255);
     }
     else {
-        while v[0] != 255 {
+        while out[out.len() - 1] != 255 {
             out.pop();
         }
+        out.pop();
     }
     return out;
 }
@@ -48,7 +49,12 @@ fn vec_shift(b: u8, n: u64, e: bool) -> u8 {
 // ----------------------------------------------------------------
 // primary byte vector crypt function 
 pub fn vec_crypt(k: u128, l: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
-    let a = vec_pad(l, v, e);
+    let mut a: Vec<u8>;
+    if e {
+        a = vec_pad(l, v, e);
+    } else {
+        a = v.clone()
+    }
     let mut f = Vec::new();
     let c = vec_const(k, l);
     for i in 0..l {
@@ -63,5 +69,10 @@ pub fn vec_crypt(k: u128, l: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
         let b = vec_shift(a[p as usize], s, e);
         f.push(b);
     }
-    return f;
+    if e {
+        return f;
+    }
+    else {
+        return vec_pad(l, &f, e); 
+    }
 }
