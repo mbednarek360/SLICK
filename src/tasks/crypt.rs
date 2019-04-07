@@ -30,9 +30,9 @@ fn vec_position(k: u128, s: u64) -> usize {
 
 // ----------------------------------------------------------------
 // shift byte value by current position
-fn vec_shift(b: u8, n: u64, e: bool) -> u8 {
+fn vec_shift(b: u8, n: usize, e: bool) -> u8 {
     let max = 256;
-    let pos = n % max;
+    let pos = n as u64 % max;
     if e {
         return (((b as u64 + pos) % max) ^ pos) as u8;
     }
@@ -41,23 +41,49 @@ fn vec_shift(b: u8, n: u64, e: bool) -> u8 {
     }
 }
 
+
+// ----------------------------------------------------------------
+// generate shuffled accending vector from key
+fn gen_vec(k: u128, l: u64, e: bool) -> Vec<usize> {
+    let mut x = k;
+    let mut a: Vec<usize> = (0..(l as usize)).collect();
+    let mut f = vec![0; l as usize];
+    for p in 0..l {
+        let s = l - p;
+        let b = vec_position(x, s);
+        if e {
+            f[p as usize] = a[b];
+        }
+        else {
+            f[a[b]] = p as usize;
+        }
+        a.remove(b);
+        x /= s as u128;
+    }
+    return f;
+}
+
+
 // ----------------------------------------------------------------
 // primary byte vector crypt function 
 pub fn vec_crypt(k: u128, l: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
-    let mut x = k;
-    let mut a: Vec<u8>;
+    let a: Vec<u8>;
     if e {
         a = vec_pad(l, v, e);
     } else {
         a = v.clone();
     }
+    let p = gen_vec(k, l, e);
     let mut f = Vec::new();
-    for p in 0..l {
-       let s = l - p;
-       let b = vec_position(x, s);
-       f.push(a[b]);
-       a.remove(b);
-       x /= s as u128;
+    let mut s: usize;
+    for c in 0..(l as usize) {
+        if e {
+            s = p[c] + 1;
+        }
+        else {
+            s = c + 1;
+        }
+        f.push(vec_shift(a[p[c]], s, e));
     }
     if e {
         return f;
