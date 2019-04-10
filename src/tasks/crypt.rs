@@ -44,7 +44,7 @@ fn vec_shift(b: u8, n: usize, e: bool) -> u8 {
 
 // ----------------------------------------------------------------
 // generate shuffled accending vector from key
-fn gen_vec(k: u128, l: u64, e: bool) -> Vec<usize> {
+pub fn gen_vec(k: u128, l: u64, e: bool) -> Vec<usize> {
     let mut x = k;
     let mut a: Vec<usize> = (0..(l as usize)).collect();
     let mut f = vec![0; l as usize];
