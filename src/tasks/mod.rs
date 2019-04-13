@@ -52,11 +52,11 @@ pub fn test(s: &String) {
 pub fn help() {
     println!("Available commands:
     
--e <key> <file> | Encryption command.
--d <key> <file> | Decryption command.
--k <size>       | Key generation command.
--p <size>       | Permutation calculation command.
--t <size>       | Speed test command.
+    -e <key> <file> | Encryption command.
+    -d <key> <file> | Decryption command.
+    -k <size>       | Key generation command.
+    -p <size>       | Permutation calculation command.
+    -t <size>       | Speed test command.
 
 https://github.com/mbednarek360/SLICK");
 }
