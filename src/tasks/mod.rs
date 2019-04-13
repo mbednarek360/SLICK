@@ -3,6 +3,7 @@ mod key;
 mod file;
 use time::precise_time_ns;
 
+
 // ----------------------------------------------------------------
 // primary file encryption function
 pub fn file_crypt(k: &String, f: &String, e: bool) {
@@ -24,9 +25,12 @@ pub fn gen_key(s: &String) {
 
 
 // ----------------------------------------------------------------
-// error for invalid command
-pub fn error() {
-    println!("Invalid command. See -h for a list of commands.");
+// prints every original index vector for given length
+pub fn permute(s: &String) {
+    let l: u64 = s.parse().unwrap();
+    for i in 1..key::max_key(l) {
+        println!("{:?}", crypt::gen_vec(i, l));
+    }
 }
 
 
@@ -36,8 +40,30 @@ pub fn test(s: &String) {
     let l: u64 = s.parse().unwrap();
     for i in 1..l {
         let start = precise_time_ns();
-        let x = crypt::gen_vec(i as u128, i);
+        let _ = crypt::gen_vec(i as u128, i);
         let end = precise_time_ns();
         println!("{}", end - start);
     }
+}
+
+
+// ----------------------------------------------------------------
+// display available commands
+pub fn help() {
+    println!("Available commands:
+    
+-e <key> <file> | Encryption command.
+-d <key> <file> | Decryption command.
+-k <size>       | Key generation command.
+-p <size>       | Permutation calculation command.
+-t <size>       | Speed test command.
+
+https://github.com/mbednarek360/SLICK");
+}
+
+
+// ----------------------------------------------------------------
+// error for invalid command
+pub fn error() {
+    println!("Invalid command. See -h for a list of commands.");
 }

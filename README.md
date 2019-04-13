@@ -7,15 +7,16 @@
 **K**ey
 
 ---
-### **Key Generation:** 
-Random number in the range 1 to l! - 1.  
-Can encrypt / decrypt information with a size less than l.  
-Length is also encoded into the key.  
 
-Ex 50-byte key: `32x20E098F42979CC1346482F169117C24B`
+## **Description**
+
+SLICK is a fast and light symmetric key cipher written in Rust. It allows for encryption of files of any size with a previously generated key. It has a 128bit max key complexity and can theoretically encrypt files up to 17.5 exabytes in size, although this is limited by available memory.
+
+SLICK is program made for recreation and may not be perfectly optimized or bug free, although effort has been put into optimizing effeciency. I will try my best to fix bugs and improve features such as error handling, but I don't have infinite time. Feel free to make a pull request or open an issue, and I will try to get to it when available.
 
 ---
-### **Encryption:**  
-Encode data into a binary sequence.  
-Apply shift cipher on each byte with location.  
-Shuffle encoding by repeatedly swapping adjacent bytes.  
+
+## **Docs**
+- [Usage](docs/usage.md)   
+- [Algorithm](docs/algorithm.md)   
+- [Installation](docs/install.md)

@@ -3,20 +3,19 @@
 fn vec_pad(k: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
     let mut out = v.clone();
     let l = v.len() as u64;
-    if k > l {
-        if e {
-            out.push(255);
-            for i in 0..((k - l) - 1) {
-                out.push(0);
-            }
-        }
-        else {
-            while out[out.len() - 1] != 255 {
-                out.pop();
-            }
-            out.pop();
+    if e {
+        out.push(255);
+        for _ in 0..(k - l) {
+            out.push(0);
         }
     }
+    else {
+        while out[out.len() - 1] != 255 {
+            out.pop();
+        }
+        out.pop();
+    }
+    println!("{:?}", out);
     return out;
 }
 
@@ -45,7 +44,7 @@ fn vec_shift(b: u8, n: usize, e: bool) -> u8 {
 // ----------------------------------------------------------------
 // generate shuffled accending vector from key
 pub fn gen_vec(k: u128, l: u64) -> Vec<usize> {
-    let mut x = k;
+    let mut x = k - 1;
     let mut a: Vec<usize> = (0..(l as usize)).collect();
     let mut s = l as usize;
     while s > 0 {
@@ -61,17 +60,17 @@ pub fn gen_vec(k: u128, l: u64) -> Vec<usize> {
 // ----------------------------------------------------------------
 // primary byte vector crypt function 
 pub fn vec_crypt(k: u128, l: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
-    let a: Vec<u8>;
+    let a: Vec<u8>; 
     if e {
         a = vec_pad(l, v, e);
     } else {
         a = v.clone();
     }
-    let p = gen_vec(k, l);
-    let mut f = Vec::with_capacity(l as usize);
-    unsafe { f.set_len(l as usize); }
+    let p = gen_vec(k, l + 1);
+    let mut f = Vec::with_capacity(l as usize + 1);
+    unsafe { f.set_len(l as usize + 1); }
     let mut s: usize;
-    for c in 0..(l as usize) {
+    for c in 0..(l as usize + 1) {
         s = p[c] + 1;
         if e {
             f[c] = vec_shift(a[p[c]], s, e);

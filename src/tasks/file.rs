@@ -2,6 +2,7 @@ use std::fs::File;
 use std::io::Read;
 use std::io::Write;
 
+
 // ----------------------------------------------------------------
 // read file to u8 vector
 pub fn read_file(s: &String) -> Vec<u8> {

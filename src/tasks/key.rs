@@ -1,8 +1,9 @@
 use rand::Rng;
 
+
 // ----------------------------------------------------------------
 // return c! or max u128
-fn max_key(c: u64) -> u128 {
+pub fn max_key(c: u64) -> u128 {
     let mut i = c as u128;
     let mut outp: u128 = 1;
     while i > 0 {
