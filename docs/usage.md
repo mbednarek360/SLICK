@@ -62,5 +62,5 @@ Times for generating shuffled index vectors of various length can be observed us
 
 **Example**:  
 
-`> slick -t 25000`
+`> slick -t 25000`  
 `> slick -t 25000 | gnuplot -p -e 'plot "/dev/stdin"'`
