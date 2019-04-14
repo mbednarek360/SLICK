@@ -33,7 +33,7 @@ A single permutation is calculated by looping through the ascending vector. Each
 
 ## **Encryption**
 
-Encrypting a file begins with reading it's bytes to a vector. A index vector is then generated to be used for shuffling those bytes. Iterating through this index vector, the current value is used as an index from which to take a byte from the file vector. Before this byte is to be pushed to the output vector, its value is shifted by `b + i ^ i` were b is the value of the byte and i is the index. This is done so that none of the original bytes are preserved, and the original value for every byte can only be recovered knowing the current index, which is dependent on the key.
+Encrypting a file begins with reading it's bytes to a vector. A index vector is then generated to be used for shuffling those bytes. Iterating through this index vector, the current value is used as an index from which to take a byte from the file vector. Before this byte is to be pushed to the output vector, its value is shifted by `b + i ^ i` twice were b is the value of the byte and i is the index and its inverse. This is done so that none of the original bytes are preserved, and the original value for every byte can only be recovered knowing the current index, which is dependent on the key.
 
 ---
 

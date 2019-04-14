@@ -2,6 +2,8 @@ use std::env;
 mod tasks;
 
 
+// ----------------------------------------------------------------
+// takes in flags and executes given task
 fn main() {
     let args: Vec<String> = env::args().collect();
     match &args[1] as &str {

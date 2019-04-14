@@ -58,6 +58,7 @@ pub fn help() {
     -p <size>       | Permutation calculation command.
     -t <size>       | Speed test command.
 
+SLICK v0.1.2
 https://github.com/mbednarek360/SLICK");
 }
 

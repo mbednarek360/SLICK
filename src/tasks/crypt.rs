@@ -15,7 +15,6 @@ fn vec_pad(k: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
         }
         out.pop();
     }
-    println!("{:?}", out);
     return out;
 }
 
@@ -70,13 +69,17 @@ pub fn vec_crypt(k: u128, l: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
     let mut f = Vec::with_capacity(l as usize + 1);
     unsafe { f.set_len(l as usize + 1); }
     let mut s: usize;
+    let mut o: usize;
     for c in 0..(l as usize + 1) {
         s = p[c] + 1;
+        o = p[l as usize - c] + 1;
         if e {
-            f[c] = vec_shift(a[p[c]], s, e);
+            f[c] = vec_shift(
+            vec_shift(a[p[c]], s, e), o, e);
         }
         else {
-            f[p[c]] = vec_shift(a[c], s, e);
+            f[p[c]] = vec_shift(
+            vec_shift(a[c], o, e), s, e);
         }
     }
     if e {
