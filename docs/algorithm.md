@@ -18,14 +18,15 @@ Size              Seed
 
 A vector of ascending integers spanning the length of the input file is used. Each seed corresponds to an individual permutation of this vector. A single permutation can be calculated in linear time for a given length. This permutation is to be used to determine where each byte will be moved in the encryption / decryption stage.
 
-**Example**:  
-| Key |   Vector  |
-|:---:|-----------|
-| 1   | [1, 2, 0] |
-| 2   | [2, 0, 1] |
-| 3   | [1, 0, 2] |
-| 4   | [2, 1, 0] |
-| 5   | [0, 2, 1] |
+**Example**:
+
+| Key |    Vector   |
+|:---:|-------------|
+| 1   | `[1, 2, 0]` |
+| 2   | `[2, 0, 1]` |
+| 3   | `[1, 0, 2]` |
+| 4   | `[2, 1, 0]` |
+| 5   | `[0, 2, 1]` |
 
 A single permutation is calculated by looping through the ascending vector. Each iteration a position is calculated using `k % l` where k is the key and l starts as the length of the vector. It then swaps the value at that position with the value at `l - 1`. The final step is to divide the k by l, and then decrement l. This process is repeated while `l > 0`.
 
