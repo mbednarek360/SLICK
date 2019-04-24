@@ -11,7 +11,7 @@ fn main() {
         "-d" => tasks::file_crypt(&args[2], &args[3], false),
         "-k" => tasks::gen_key(&args[2]),
         "-p" => tasks::permute(&args[2]),
-        "-t" => tasks::test(&args[2]),
+        "-t" => tasks::test(&args[2], &args[3]),
         "-h" => tasks::help(),
         _ => tasks::error(),
     }

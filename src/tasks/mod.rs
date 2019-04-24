@@ -36,13 +36,16 @@ pub fn permute(s: &String) {
 
 // ----------------------------------------------------------------
 // run vector generation for all lengths upto given
-pub fn test(s: &String) {
+pub fn test(f: &String, s: &String) {
+    let b: u64 = f.parse().unwrap();
     let l: u64 = s.parse().unwrap();
-    for i in 1..l {
+    for i in b..l + 1 {
+        let v = vec![0; i as usize];
         let start = precise_time_ns();
-        let _ = crypt::gen_vec(i as u128, i);
+        // let _ = crypt::gen_vec(i as u128, i);
+        let _ = crypt::vec_crypt(i as u128, i, &v, true);
         let end = precise_time_ns();
-        println!("{}", end - start);
+        println!("{}, {}", i, end - start);
     }
 }
 
