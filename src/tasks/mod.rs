@@ -7,20 +7,22 @@ use time::precise_time_ns;
 // ----------------------------------------------------------------
 // primary file encryption function
 pub fn file_crypt(k: &String, f: &String, e: bool) {
-    let key = key::parse_key(&k);
+    let (round, size, seed) = key::parse_key(&k);
     let data = file::read_file(&f);
-    let enc = crypt::vec_crypt(key.1, key.0, &data, e);
+    let enc = crypt::vec_crypt(seed, size, &data, e);
     file::write_file(&f, &enc);
 }
 
 
 // ----------------------------------------------------------------
 // generate and display key
-pub fn gen_key(s: &String) {
+pub fn gen_key(s: &String, c:&String) {
     let l: u64 = s.parse().unwrap();
-    let k = key::gen_key(l);
+    let r: u16 = c.parse().unwrap();
+    let k = key::gen_key(l, r);
     println!("{}-byte key:\n", l);
-    println!("{}", k);
+    println!("{}", &k);
+    println!("{:?}", key::parse_key(&k));
 }
 
 
@@ -55,11 +57,11 @@ pub fn test(f: &String, s: &String) {
 pub fn help() {
     println!("Available commands:
     
-    -e <key> <file> | Encryption command.
-    -d <key> <file> | Decryption command.
-    -k <size>       | Key generation command.
-    -p <size>       | Permutation calculation command.
-    -t <size>       | Speed test command.
+    -e <key> <file>    | Encryption command.
+    -d <key> <file>    | Decryption command.
+    -k <size> <rounds> | Key generation command.
+    -p <size>          | Permutation calculation command.
+    -t <size>          | Speed test command.
 
 SLICK v0.1.3
 https://github.com/mbednarek360/SLICK");
