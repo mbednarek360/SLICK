@@ -26,7 +26,7 @@ fn vec_pad(k: usize, v: &Vec<u8>, e: bool) -> Vec<u8> {
 
 // ----------------------------------------------------------------
 // shifts values in vector given index vector
-fn vec_shift(l: usize, v: &Vec<u8>, i: &Vec<usize>, e: bool) -> Vec<u8> {
+fn vec_shift(l: usize, v: &Vec<u8>, i: &Vec<usize>) -> Vec<u8> {
     let mut out: Vec<u8> = Vec::with_capacity(l);
     unsafe { out.set_len(l); }
     for c in 0..l {
@@ -88,22 +88,27 @@ fn gen_index(l: usize, k: u128) -> Vec<usize> {
 // primary byte vector crypt function 
 pub fn vec_crypt(k: u128, l: usize, r: u16, v: &Vec<u8>, e: bool) -> Vec<u8> {
     let s = l + 1;
+    let mut x = k;
     let mut a: Vec<u8>; 
-    let i = gen_index(s, k);
+    let mut i: Vec<usize>;
     if e {
         a = vec_pad(l, v, e);
-        for _ in 0..r {
+        for c in 0..r {
+            i = gen_index(s, k);
             a = vec_sub(k, s, &a, e);
             a = vec_permute(s, &a, &i, e);
-            a = vec_shift(s, &a, &i, e);
+            a = vec_shift(s, &a, &i);
+            x = c as u128 ^ x;
         }
     }
     else {
         a = v.clone();
-        for _ in 0..r {
-            a = vec_shift(s, &a, &i, e);
+        for c in 0..r {
+            i = gen_index(s, k);
+            a = vec_shift(s, &a, &i);
             a = vec_permute(s, &a, &i, e);
             a = vec_sub(k, s, &a, e);
+            x = c as u128 ^ x;  
         }
         a = vec_pad(l, &a, e); 
     }
