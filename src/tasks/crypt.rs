@@ -1,8 +1,8 @@
 // ----------------------------------------------------------------
 // pad or depad vector with zeroes to match key length
-fn vec_pad(k: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
+fn vec_pad(k: usize, v: &Vec<u8>, e: bool) -> Vec<u8> {
     let mut out = v.clone();
-    let l = v.len() as u64;
+    let l = v.len();
     if e {
         out.push(255);
         for _ in 0..(k - l) {
@@ -20,72 +20,42 @@ fn vec_pad(k: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
 
 
 // ----------------------------------------------------------------
-// calculate position to find value for current byte
-fn vec_position(k: u128, s: usize) -> usize {
-    return (k % s as u128) as usize;
+// shifts values in vector given subdivided key vector
+fn vec_shift(l: usize, v: &Vec<u8>, i: &Vec<usize>, e: bool) -> Vec<u8> {
+
 }
 
 
 // ----------------------------------------------------------------
-// shift byte value by current position
-fn vec_shift(b: u8, n: usize, e: bool) -> u8 {
-    let max = 256;
-    let pos = n as u64 % max;
-    if e {
-        return (((b as u64 + pos) % max) ^ pos) as u8;
-    }
-    else {
-        return (((b as u64 ^ pos) - pos) % max) as u8;
-    }
+// substitutes values in a vector using shuffled bytes made with an index vector
+fn vec_sub(l: usize, v: &Vec<u8>, i: &Vec<usize>, e: bool) -> Vec<u8> {
+
 }
 
 
 // ----------------------------------------------------------------
-// generate shuffled accending vector from key
-pub fn gen_vec(k: u128, l: u64) -> Vec<usize> {
-    let mut x = k - 1;
-    let mut a: Vec<usize> = (0..(l as usize)).collect();
-    let mut s = l as usize;
-    while s > 0 {
-        let p = vec_position(x, s);
-        a.swap(p, s - 1);
-        x /= s as u128;
-        s -= 1;
-    }
-    return a;
+// generates a permutation of a vector given an index vector
+fn vec_permute(l: usize, v: &Vec<u8>, i: &Vec<usize>, e: bool) -> Vec<u8> {
+
+}
+
+
+// ----------------------------------------------------------------
+// subdivides key into vector to be used for index and shift generation
+fn key_div(k: u128, l: usize) -> Vec<u128> {
+
+} 
+
+
+// ----------------------------------------------------------------
+// generate shuffled accending index vector from subdivided key vector
+fn gen_index(l: usize, k: &Vec<u128>) -> Vec<usize> {
+
 }
 
 
 // ----------------------------------------------------------------
 // primary byte vector crypt function 
-pub fn vec_crypt(k: u128, l: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
-    let a: Vec<u8>; 
-    if e {
-        a = vec_pad(l, v, e);
-    } else {
-        a = v.clone();
-    }
-    let p = gen_vec(k, l + 1);
-    let mut f = Vec::with_capacity(l as usize + 1);
-    unsafe { f.set_len(l as usize + 1); }
-    let mut s: usize;
-    let mut o: usize;
-    for c in 0..(l as usize + 1) {
-        s = p[c] + 1;
-        o = p[l as usize - c] + 1;
-        if e {
-            f[c] = vec_shift(
-            vec_shift(a[p[c]], s, e), o, e);
-        }
-        else {
-            f[p[c]] = vec_shift(
-            vec_shift(a[c], o, e), s, e);
-        }
-    }
-    if e {
-        return f;
-    }
-    else {
-        return vec_pad(l, &f, e); 
-    }
+pub fn vec_crypt(k: u128, l: usize, r: u16, v: &Vec<u8>, e: bool) -> Vec<u8> {
+
 }

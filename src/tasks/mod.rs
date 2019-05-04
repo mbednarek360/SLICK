@@ -9,7 +9,7 @@ use time::precise_time_ns;
 pub fn file_crypt(k: &String, f: &String, e: bool) {
     let (round, size, seed) = key::parse_key(&k);
     let data = file::read_file(&f);
-    let enc = crypt::vec_crypt(seed, size, &data, e);
+    let enc = crypt::vec_crypt(seed, size, round, &data, e);
     file::write_file(&f, &enc);
 }
 
@@ -17,35 +17,24 @@ pub fn file_crypt(k: &String, f: &String, e: bool) {
 // ----------------------------------------------------------------
 // generate and display key
 pub fn gen_key(s: &String, c:&String) {
-    let l: u64 = s.parse().unwrap();
+    let l: usize = s.parse().unwrap();
     let r: u16 = c.parse().unwrap();
     let k = key::gen_key(l, r);
     println!("{}-byte key:\n", l);
     println!("{}", &k);
-    println!("{:?}", key::parse_key(&k));
-}
-
-
-// ----------------------------------------------------------------
-// prints every original index vector for given length
-pub fn permute(s: &String) {
-    let l: u64 = s.parse().unwrap();
-    for i in 1..key::max_key(l) {
-        println!("{:?}", crypt::gen_vec(i, l));
-    }
 }
 
 
 // ----------------------------------------------------------------
 // run vector generation for all lengths upto given
 pub fn test(f: &String, s: &String) {
-    let b: u64 = f.parse().unwrap();
-    let l: u64 = s.parse().unwrap();
+    let b: usize = f.parse().unwrap();
+    let l: usize = s.parse().unwrap();
+    let r: u16 = s.parse().unwrap();
     for i in b..l + 1 {
-        let v = vec![0; i as usize];
+        let v = vec![0; i];
         let start = precise_time_ns();
-        // let _ = crypt::gen_vec(i as u128, i);
-        let _ = crypt::vec_crypt(i as u128, i, &v, true);
+        let _ = crypt::vec_crypt(i as u128, i, r, &v, true);
         let end = precise_time_ns();
         println!("{}, {}", i, end - start);
     }
@@ -60,7 +49,6 @@ pub fn help() {
     -e <key> <file>    | Encryption command.
     -d <key> <file>    | Decryption command.
     -k <size> <rounds> | Key generation command.
-    -p <size>          | Permutation calculation command.
     -t <size>          | Speed test command.
 
 SLICK v0.1.3
