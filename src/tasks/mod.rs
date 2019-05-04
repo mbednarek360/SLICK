@@ -51,7 +51,7 @@ pub fn help() {
     -k <size> <rounds> | Key generation command.
     -t <size>          | Speed test command.
 
-SLICK v0.1.3
+SLICK v0.2.0
 https://github.com/mbednarek360/SLICK");
 }
 
