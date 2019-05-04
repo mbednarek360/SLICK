@@ -30,11 +30,10 @@ pub fn gen_key(s: &String, c:&String) {
 pub fn test(f: &String, s: &String) {
     let b: usize = f.parse().unwrap();
     let l: usize = s.parse().unwrap();
-    let r: u16 = s.parse().unwrap();
     for i in b..l + 1 {
         let v = vec![0; i];
         let start = precise_time_ns();
-        let _ = crypt::vec_crypt(i as u128, i, r, &v, true);
+        let _ = crypt::vec_crypt(i as u128, i, 1, &v, true);
         let end = precise_time_ns();
         println!("{}, {}", i, end - start);
     }
