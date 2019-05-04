@@ -2,14 +2,19 @@
 
 ## **Key Generation**
 
-Each key contains two parts, a file size, and a seed. Seed generation is accomplished by generating a pseudo-random number between 0 and n! where n is the max file size. Using a seed outside this range will produce a duplicate permutation or an unshuffled vector. Both the size and the seed are packed into the key as hexadecimal. 
+Each key contains three values, a round count, size, and seed. The seed is used to permute, shift, and substitute a vector. It is generated as a pseudo-random value such that `0 < k < l!` where l is the length of the input, and k is the k. The size value is used to fit the vector to such length, and the round count is used to know how many times to encrypt the vector. The key is encoded first in hex then base64.
 
 **Example**:  
 
+15000-byte key:
 ```
-32xA5D667F9C91B8AD3DC3DA3F9E8A7207E
- ^                 ^
-Size              Seed
+ABAAAAAAAAA6mOkqfA+Es1L8mVfVNyKYsFE
+```
+In Hex:
+```
+0010 0000000000003A98 E92A7C0F84B352FC9957D5372298B051
+ ^           ^                        ^
+Rounds      Size                     Seed
 ```
 
 ---
@@ -34,13 +39,13 @@ A single permutation is calculated by looping through the ascending vector. Each
 
 ## **Encryption**
 
-Encrypting a file begins with reading it's bytes to a vector. A index vector is then generated to be used for shuffling those bytes. Iterating through this index vector, the current value is used as an index from which to take a byte from the file vector. Before this byte is to be pushed to the output vector, its value is shifted by `b + i ^ i` twice were b is the value of the byte and i is the index and its inverse. This is done so that none of the original bytes are preserved, and the original value for every byte can only be recovered knowing the current index, which is dependent on the key.
+Encrypting a file begins with reading it's bytes to a vector. Before permutation, a shuffled byte array of values up to 256 is used to substitute bytes randomly. A index vector is then generated to be used for shuffling those bytes. Iterating through this index vector, the current value is used as an index from which to take a byte from the file vector. Before this byte is to be pushed to the output vector, its value is shifted by `b + i ^ i` were b is the value of the byte and i is the index. This is done so that none of the original bytes are preserved, and the original value for every byte can only be recovered knowing the current index, which is dependent on the key.
 
 ---
 
 ## **Decryption**
 
-Decryption is done in a similar way to encryption, instead swapping the index and value of the index vector for which to place a given byte. This allows each byte to be returned to its original position, after being shifted back by `b ^ i - i`.
+Decryption is done in a similar way to encryption, instead swapping the index and value of the index vector for which to place a given byte. This allows each byte to be returned to its original position, after being shifted back by `b ^ i - i`. Substitution is also reversed by inversly shuffling the byte array.
 
 ---
 

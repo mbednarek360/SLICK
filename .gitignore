@@ -1,4 +1,6 @@
 /target
 **/*.rs.bk
 **/*.csv
+**/*.log
 Cargo.lock
+/.vscode

@@ -1,8 +1,13 @@
 // ----------------------------------------------------------------
+// declare ove byte value
+const MAX_BYTE: usize = 256;
+
+
+// ----------------------------------------------------------------
 // pad or depad vector with zeroes to match key length
-fn vec_pad(k: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
+fn vec_pad(k: usize, v: &Vec<u8>, e: bool) -> Vec<u8> {
     let mut out = v.clone();
-    let l = v.len() as u64;
+    let l = v.len();
     if e {
         out.push(255);
         for _ in 0..(k - l) {
@@ -20,72 +25,99 @@ fn vec_pad(k: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
 
 
 // ----------------------------------------------------------------
-// calculate position to find value for current byte
-fn vec_position(k: u128, s: usize) -> usize {
-    return (k % s as u128) as usize;
-}
-
-
-// ----------------------------------------------------------------
-// shift byte value by current position
-fn vec_shift(b: u8, n: usize, e: bool) -> u8 {
-    let max = 256;
-    let pos = n as u64 % max;
+// shifts values in vector given index vector
+fn vec_shift(l: usize, v: &Vec<u8>, i: &Vec<usize>, e: bool) -> Vec<u8> {
+    let mut out: Vec<u8> = Vec::with_capacity(l);
+    unsafe { out.set_len(l); }
     if e {
-        return (((b as u64 + pos) % max) ^ pos) as u8;
+        for c in 0..l {
+                out[c] = (((v[c] as usize + i[c]) ^ i[c]) % MAX_BYTE) as u8;
+        }
     }
     else {
-        return (((b as u64 ^ pos) - pos) % max) as u8;
+        for c in 0..l {
+                out[c] = (((v[c] as usize ^ i[c]) % MAX_BYTE) - i[c]) as u8;
+        }
     }
+    return out;
 }
 
 
 // ----------------------------------------------------------------
-// generate shuffled accending vector from key
-pub fn gen_vec(k: u128, l: u64) -> Vec<usize> {
+// substitutes values in a vector using shuffled bytes made with an index vector
+fn vec_sub(k: u128, l: usize, v: &Vec<u8>, e: bool) -> Vec<u8> {
+    let i = gen_index(MAX_BYTE, k);
+    let rng: Vec<u8> = (0..=(MAX_BYTE - 1) as u8).collect();
+    let sub_vec = vec_permute(MAX_BYTE, &rng, &i, e);
+    let mut out: Vec<u8> = Vec::with_capacity(l);
+    unsafe { out.set_len(l); }
+    for c in 0..l {
+        out[c] = sub_vec[v[c] as usize];
+    }
+    return out;
+}
+
+
+// ----------------------------------------------------------------
+// generates a permutation of a vector given an index vector
+fn vec_permute(l: usize, v: &Vec<u8>, i: &Vec<usize>, e: bool) -> Vec<u8> {
+    let mut f = Vec::with_capacity(l);
+    unsafe { f.set_len(l); }
+    for c in 0..l {
+        if e {
+            f[c] = v[i[c]];
+        }
+        else {
+            f[i[c]] = v[c];
+        }
+    }
+    return f;
+}
+
+
+// ----------------------------------------------------------------
+// generate shuffled accending index vector from subdivided key vector
+pub fn gen_index(l: usize, k: u128) -> Vec<usize> {
     let mut x = k - 1;
-    let mut a: Vec<usize> = (0..(l as usize)).collect();
-    let mut s = l as usize;
+    let mut s = l; 
+    let mut v: Vec<usize> = (0..l).collect();
     while s > 0 {
-        let p = vec_position(x, s);
-        a.swap(p, s - 1);
+        let p = (x % s as u128) as usize;
+        v.swap(p, s - 1);
         x /= s as u128;
         s -= 1;
     }
-    return a;
+    return v;
 }
 
 
 // ----------------------------------------------------------------
 // primary byte vector crypt function 
-pub fn vec_crypt(k: u128, l: u64, v: &Vec<u8>, e: bool) -> Vec<u8> {
-    let a: Vec<u8>; 
+pub fn vec_crypt(k: u128, l: usize, r: u16, v: &Vec<u8>, e: bool) -> Vec<u8> {
+    let s = l + 1;
+    let mut x = k;
+    let mut a: Vec<u8>; 
+    let mut i: Vec<usize>;
     if e {
         a = vec_pad(l, v, e);
-    } else {
-        a = v.clone();
-    }
-    let p = gen_vec(k, l + 1);
-    let mut f = Vec::with_capacity(l as usize + 1);
-    unsafe { f.set_len(l as usize + 1); }
-    let mut s: usize;
-    let mut o: usize;
-    for c in 0..(l as usize + 1) {
-        s = p[c] + 1;
-        o = p[l as usize - c] + 1;
-        if e {
-            f[c] = vec_shift(
-            vec_shift(a[p[c]], s, e), o, e);
+        for c in 0..r {
+            i = gen_index(s, k);
+            a = vec_sub(k, s, &a, e);
+            a = vec_permute(s, &a, &i, e);
+            a = vec_shift(s, &a, &i, e);
+            x = c as u128 ^ x;
         }
-        else {
-            f[p[c]] = vec_shift(
-            vec_shift(a[c], o, e), s, e);
-        }
-    }
-    if e {
-        return f;
     }
     else {
-        return vec_pad(l, &f, e); 
+        a = v.clone();
+        for c in 0..r {
+            i = gen_index(s, k);
+            a = vec_shift(s, &a, &i, e);
+            a = vec_permute(s, &a, &i, e);
+            a = vec_sub(k, s, &a, e);
+            x = c as u128 ^ x;  
+        }
+        a = vec_pad(l, &a, e); 
     }
+    return a;
 }

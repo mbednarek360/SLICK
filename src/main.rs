@@ -9,7 +9,7 @@ fn main() {
     match &args[1] as &str {
         "-e" => tasks::file_crypt(&args[2], &args[3], true),
         "-d" => tasks::file_crypt(&args[2], &args[3], false),
-        "-k" => tasks::gen_key(&args[2]),
+        "-k" => tasks::gen_key(&args[2], &args[3]),
         "-p" => tasks::permute(&args[2]),
         "-t" => tasks::test(&args[2], &args[3]),
         "-h" => tasks::help(),
