@@ -60,7 +60,7 @@ pub fn help() {
     -p <size>          | Generate all permutations.
     -t <size>          | Speed test command.
 
-SLICK v0.2.0
+SLICK v0.2.1
 https://github.com/mbednarek360/SLICK");
 }
 
