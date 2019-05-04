@@ -2,6 +2,7 @@ use rand::Rng;
 use rustc_serialize::base64::{self, ToBase64, FromBase64};
 use rustc_serialize::hex::{ToHex, FromHex};
 
+
 // ----------------------------------------------------------------
 // return c! or max u128
 pub fn max_key(c: usize) -> u128 {

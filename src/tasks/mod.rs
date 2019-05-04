@@ -39,6 +39,15 @@ pub fn test(f: &String, s: &String) {
     }
 }
 
+// ----------------------------------------------------------------
+// generates permutations of given length
+pub fn permute(s: &String) {
+    let l: usize = s.parse().unwrap();
+    for i in 1..key::max_key(l) {
+        println!("{:?}", crypt::gen_index(l, i));
+    }
+}
+
 
 // ----------------------------------------------------------------
 // display available commands
@@ -48,6 +57,7 @@ pub fn help() {
     -e <key> <file>    | Encryption command.
     -d <key> <file>    | Decryption command.
     -k <size> <rounds> | Key generation command.
+    -p <size>          | Generate all permutations.
     -t <size>          | Speed test command.
 
 SLICK v0.2.0

@@ -70,7 +70,7 @@ fn vec_permute(l: usize, v: &Vec<u8>, i: &Vec<usize>, e: bool) -> Vec<u8> {
 
 // ----------------------------------------------------------------
 // generate shuffled accending index vector from subdivided key vector
-fn gen_index(l: usize, k: u128) -> Vec<usize> {
+pub fn gen_index(l: usize, k: u128) -> Vec<usize> {
     let mut x = k - 1;
     let mut s = l; 
     let mut v: Vec<usize> = (0..l).collect();
