@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------
-// declare ove byte value
+// declare over byte value
 const MAX_BYTE: usize = 256;
 
 
