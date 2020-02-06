@@ -3,4 +3,7 @@
 **/*.csv
 **/*.log
 Cargo.lock
+Cargo.toml
 /.vscode
+cli/core
+web/core

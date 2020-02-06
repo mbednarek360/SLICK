@@ -6,13 +6,15 @@ edition = "2018"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
+path = "web/main.rs"
 
 [dependencies]
 wasm-bindgen="*"
 gloo="*"
 rand = "*"
 time = "*"
-rustc-serialize = "*"
+hex = "*"
+base64 = "*"
 
 [dependencies.web-sys]
 version = "*"
