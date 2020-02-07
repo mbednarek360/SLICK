@@ -3,14 +3,15 @@ name = "SLICK"
 version = "0.2.1"
 authors = ["Michael Bednarek <mbednarek360@protonmail.com>"]
 edition = "2018"
+wasm-opt = false
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 path = "web/main.rs"
 
 [dependencies]
-wasm-bindgen="*"
-gloo="*"
+wasm-bindgen = "*"
+gloo = "*"
 rand = "*"
 time = "*"
 hex = "*"
