@@ -1,4 +1,4 @@
-mod crypt;
+pub mod crypt;
 mod key;
 mod file;
 use time::precise_time_ns;
@@ -9,7 +9,7 @@ use time::precise_time_ns;
 pub fn file_crypt(k: &String, f: &String, e: bool) {
     let (round, size, seed) = key::parse_key(&k);
     let data = file::read_file(&f);
-    let enc = crypt::vec_crypt(seed, size, round, &data, e);
+    let enc = crypt::vec_crypt(seed, size, round, &data, e, true);
     file::write_file(&f, &enc);
 }
 
@@ -33,7 +33,7 @@ pub fn test(f: &String, s: &String) {
     for i in b..l + 1 {
         let v = vec![0; i];
         let start = precise_time_ns();
-        let _ = crypt::vec_crypt(i as u128, i, 1, &v, true);
+        let _ = crypt::vec_crypt(i as u128, i, 1, &v, true, true);
         let end = precise_time_ns();
         println!("{}, {}", i, end - start);
     }

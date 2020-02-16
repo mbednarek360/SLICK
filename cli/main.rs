@@ -1,7 +1,6 @@
 use std::env;
 mod core;
 
-
 // ----------------------------------------------------------------
 // takes in flags and executes given core
 fn main() {

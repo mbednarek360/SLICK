@@ -92,10 +92,34 @@ pub fn gen_index(l: usize, k: u128) -> Vec<usize> {
 
 
 // ----------------------------------------------------------------
+// convert and hash int key
+fn hash_key(k: u128) -> u128 {
+
+    // vectorize
+    let mut key_vec: Vec<u8> = Vec::new();
+    for c in k.to_string().chars() {
+        key_vec.push(c.to_digit(10).unwrap() as u8);
+    }
+
+    // hash
+    key_vec = vec_crypt(k, key_vec.len(), 10, &key_vec, true, false);
+
+    // rasterize
+    let mut outp: u128 = 0;
+    let mut index: u32 = key_vec.len() as u32 - 1;
+    for c in key_vec {
+        outp += 10u128.pow(index) * c as u128;
+        index -= 1;
+    }
+    return outp;
+}
+
+
+// ----------------------------------------------------------------
 // primary byte vector crypt function 
-pub fn vec_crypt(k: u128, l: usize, r: u16, v: &Vec<u8>, e: bool) -> Vec<u8> {
+pub fn vec_crypt(k: u128, l: usize, r: u16, v: &Vec<u8>, e: bool, h: bool) -> Vec<u8> {
     let s = l + 1;
-    let mut x = k;
+    let mut x = if h { hash_key(k) } else { k };
     let mut a: Vec<u8>; 
     let mut i: Vec<usize>;
     if e {
