@@ -1,9 +1,11 @@
 [package]
 name = "slick2"
-version = "0.2.0"
+version = "0.1.0"
 authors = ["Michael Bednarek <mbednarek360@protonmail.com>"]
 edition = "2018"
 description = "Fast and Slick Symmetric Cipher"
 license = "MPL-2.0"
 
 [dependencies]
+numext-fixed-uint = "^0.1.4"
+blake3 = "^0.3.6"
