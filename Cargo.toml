@@ -1,0 +1,9 @@
+[package]
+name = "slick2"
+version = "0.2.0"
+authors = ["Michael Bednarek <mbednarek360@protonmail.com>"]
+edition = "2018"
+description = "Fast and Slick Symmetric Cipher"
+license = "MPL-2.0"
+
+[dependencies]
