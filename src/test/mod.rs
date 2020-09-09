@@ -1,3 +1,6 @@
+use super::core::conf::*;
+use super::core::perm;
+
 // check encryption / decryption results in original
 #[test]
 fn integrity() {
@@ -11,9 +14,12 @@ fn integrity() {
 
 #[test]
 fn collision() {
-    // create random input of small size
-    // go through all keys iteratively
-    // fail if any two outputs match
+    let mut perms: [[u8; BLOCK_SIZE]; PERM_COUNT] = [[0; BLOCK_SIZE]; PERM_COUNT]; 
+    for key in 0..PERM_COUNT {
+        let perm = perm::gen_perm(KeyType::from(key));
+        assert!(!perms.contains(&perm));
+        perms[key] = perm;
+    }
 }
 
 #[test]

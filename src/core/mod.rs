@@ -1,2 +1,2 @@
 pub mod perm;
-mod conf;
+pub mod conf;
