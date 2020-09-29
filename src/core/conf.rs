@@ -1,16 +1,12 @@
 // parameters
 pub type KeyType = ethereum_types::U256;
 pub type BlockType = u8;
-#[cfg(not(test))] 
+pub const BLOCK_SIZE: usize = 58;
 pub const KEY_SIZE: usize = 256;
-#[cfg(not(test))] 
-pub const BLOCK_SIZE: usize = 57;
 
 // test parameters
 #[cfg(test)]
-pub const KEY_SIZE: usize = 13;
-#[cfg(test)]
-pub const BLOCK_SIZE: usize = 7;
+pub const TEST_BLOCK_SIZE: usize = 7;
 
 // for collision testing
 #[cfg(test)]
@@ -19,7 +15,7 @@ pub const PERM_COUNT: usize = gen_fact();
 const fn gen_fact() -> usize {
     let mut product = 1;
     let mut index = 2;
-    while index <= BLOCK_SIZE {
+    while index <= TEST_BLOCK_SIZE {
         product *= index;
         index += 1;
     }
