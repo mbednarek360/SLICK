@@ -1,14 +1,11 @@
 // parameters
 pub type KeyType = primitive_types::U256;
 pub type BlockType = u8;
-#[cfg(not(test))] 
 pub const KEY_SIZE: usize = 256;
 #[cfg(not(test))] 
 pub const BLOCK_SIZE: usize = 57;
 
 // test parameters
-#[cfg(test)]
-pub const KEY_SIZE: usize = 13;
 #[cfg(test)]
 pub const BLOCK_SIZE: usize = 7;
 
