@@ -1,5 +1,5 @@
 // parameters
-pub type KeyType = ethereum_types::U256;
+pub type KeyType = primitive_types::U256;
 pub type BlockType = u8;
 pub const BLOCK_SIZE: usize = 58;
 pub const KEY_SIZE: usize = 256;
